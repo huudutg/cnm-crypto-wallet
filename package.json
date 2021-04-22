@@ -1,0 +1,38 @@
+{
+    "name": "cit-wearos-admin-fe",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev -p 8081",
+        "build": "next build",
+        "start": "next start -p 3000"
+    },
+    "dependencies": {
+        "@uiw/react-codemirror": "^3.0.6",
+        "@uiw/react-monacoeditor": "^3.2.1",
+        "antd": "^4.11.2",
+        "axios": "^0.21.1",
+        "lodash": "^4.17.21",
+        "moment": "^2.29.1",
+        "monaco-editor": "^0.23.0",
+        "next": "10.0.6",
+        "react": "17.0.1",
+        "react-ace": "^9.4.0",
+        "react-dom": "17.0.1",
+        "react-google-login": "^5.2.2",
+        "react-json-tree": "^0.15.0",
+        "react-simple-code-editor": "^0.11.0",
+        "react-syntax-highlighter": "^15.4.3",
+        "sass": "^1.32.6",
+        "use-debounce": "^6.0.0",
+        "webpack": "^5.28.0"
+    },
+    "devDependencies": {
+        "@types/lodash": "^4.14.168",
+        "@types/node": "^14.14.25",
+        "@types/react": "^17.0.0",
+        "@types/react-syntax-highlighter": "^13.5.0",
+        "@types/webpack": "^4.41.26",
+        "typescript": "^4.1.3"
+    }
+}

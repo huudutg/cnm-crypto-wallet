@@ -1,0 +1,14 @@
+.Group-member{
+  &--p{
+    margin-bottom: 0.5em;
+  }
+  &__role{
+    border-radius: 20px;
+  }
+  &__avatar{
+    background-color: #705A49;
+  }
+  &--desc{
+    color: rgba(0, 0, 0, 0.45);
+  }
+}

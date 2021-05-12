@@ -8,7 +8,7 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 import componentStyles from "assets/theme/views/admin/tables.js";
 // core components
 import Header from "components/Headers/Header.js";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -18,6 +18,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import { AXIOS } from '../../config.js';
+import socket from '../../socket/index'
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -36,16 +38,6 @@ const StyledTableRow = withStyles((theme) => ({
     },
   },
 }))(TableRow);
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
 
 const useStyles = makeStyles({
   table: {
@@ -57,6 +49,24 @@ const useStyles = makeStyles({
 const Tables = () => {
   const classes = useStyles();
   const theme = useTheme();
+  const [blockchain, setblockchain] = useState([])
+  useEffect(() => {
+    AXIOS.get("/blockchain").then((response) => {
+      setblockchain(response.data.transactionsHistory)
+
+    })
+
+
+    socket.on("blockchain", (data) => {
+      console.log('%c datablockchain', 'color: blue;', data)
+      setblockchain(data.transactionsHistory)
+
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log(blockchain)
+  }, [blockchain]);
   return (
     <>
       <Header />
@@ -82,23 +92,24 @@ const Tables = () => {
               <Table className={classes.table} aria-label="customized table">
                 <TableHead>
                   <TableRow>
-                    <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-                    <StyledTableCell align="right">Calories</StyledTableCell>
-                    <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
-                    <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-                    <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
+                    <StyledTableCell>Sender</StyledTableCell>
+                    <StyledTableCell>Receiver</StyledTableCell>
+                    <StyledTableCell align="right">Amount</StyledTableCell>
+                    <StyledTableCell align="right">Date</StyledTableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows.map((row) => (
-                    <StyledTableRow key={row.name}>
+                  {blockchain?.map((row) => (
+                    <StyledTableRow key={row.transactionId}>
                       <StyledTableCell component="th" scope="row">
-                        {row.name}
+                        {row.sender}
                       </StyledTableCell>
-                      <StyledTableCell align="right">{row.calories}</StyledTableCell>
-                      <StyledTableCell align="right">{row.fat}</StyledTableCell>
-                      <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-                      <StyledTableCell align="right">{row.protein}</StyledTableCell>
+                      <StyledTableCell component="th" scope="row">
+                        {row.recipient}
+                      </StyledTableCell>
+                      <StyledTableCell align="right">{row.amount}</StyledTableCell>
+                      <StyledTableCell align="right">{row.date}</StyledTableCell>
+
                     </StyledTableRow>
                   ))}
                 </TableBody>

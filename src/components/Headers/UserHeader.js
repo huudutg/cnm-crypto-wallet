@@ -16,6 +16,7 @@ const useStyles = makeStyles(componentStyles);
 
 const UserHeader = () => {
   const classes = useStyles();
+  const publicKey = localStorage.getItem("publicKey") || "";
   const theme = useTheme();
   return (
     <>
@@ -48,8 +49,13 @@ const UserHeader = () => {
               <Typography
                 variant="h1"
                 classes={{ root: classes.typographyRootH1 }}
+                style={{
+                  maxWidth: "1800px", whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
               >
-                Hello Jesse
+                Hello {publicKey}
               </Typography>
               <Box
                 component="p"
@@ -58,15 +64,10 @@ const UserHeader = () => {
                 lineHeight="1.7"
                 fontSize="1rem"
               >
-                This is your profile page. You can see the progress you've made
-                with your work and manage your projects or assigned tasks
+                This is your transactions history. You can see the progress you've made
+                with your work and manage your transactions here
               </Box>
-              <Button
-                variant="contained"
-                classes={{ root: classes.buttonRoot }}
-              >
-                Edit profile
-              </Button>
+
             </Grid>
           </Grid>
         </Container>

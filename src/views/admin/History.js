@@ -1,121 +1,82 @@
-import React from "react";
-
-// @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
-import { useTheme } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardHeader from "@material-ui/core/CardHeader";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
-
+import Paper from '@material-ui/core/Paper';
+// @material-ui/core components
+import { makeStyles, useTheme, withStyles } from "@material-ui/core/styles";
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Typography from "@material-ui/core/Typography";
 // core components
-import Header from "components/Headers/Header.js";
+import UserHeader from "components/Headers/UserHeader.js";
+import React, { useEffect, useState } from "react";
+import { AXIOS } from '../../config.js';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
-import componentStyles from "assets/theme/views/admin/maps.js";
 
-const useStyles = makeStyles(componentStyles);
 
-const MapWrapper = () => {
-  const mapRef = React.useRef(null);
-  const theme = useTheme();
-  React.useEffect(() => {
-    let google = window.google;
-    let map = mapRef.current;
-    let lat = "40.748817";
-    let lng = "-73.985428";
-    const myLatlng = new google.maps.LatLng(lat, lng);
-    const mapOptions = {
-      zoom: 12,
-      center: myLatlng,
-      scrollwheel: false,
-      zoomControl: true,
-      styles: [
-        {
-          featureType: "administrative",
-          elementType: "labels.text.fill",
-          stylers: [{ color: "#444444" }],
-        },
-        {
-          featureType: "landscape",
-          elementType: "all",
-          stylers: [{ color: "#f2f2f2" }],
-        },
-        {
-          featureType: "poi",
-          elementType: "all",
-          stylers: [{ visibility: "off" }],
-        },
-        {
-          featureType: "road",
-          elementType: "all",
-          stylers: [{ saturation: -100 }, { lightness: 45 }],
-        },
-        {
-          featureType: "road.highway",
-          elementType: "all",
-          stylers: [{ visibility: "simplified" }],
-        },
-        {
-          featureType: "road.arterial",
-          elementType: "labels.icon",
-          stylers: [{ visibility: "off" }],
-        },
-        {
-          featureType: "transit",
-          elementType: "all",
-          stylers: [{ visibility: "off" }],
-        },
-        {
-          featureType: "water",
-          elementType: "all",
-          stylers: [
-            { color: theme.palette.primary.main },
-            { visibility: "on" },
-          ],
-        },
-      ],
-    };
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell);
 
-    map = new google.maps.Map(map, mapOptions);
+const StyledTableRow = withStyles((theme) => ({
+  root: {
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover,
+    },
+  },
+}))(TableRow);
 
-    const marker = new google.maps.Marker({
-      position: myLatlng,
-      map: map,
-      animation: google.maps.Animation.DROP,
-      title: "Light Bootstrap Dashboard PRO React!",
-    });
+const useStyles = makeStyles({
+  table: {
+    minWidth: 700,
+  },
+});
 
-    const contentString =
-      '<div class="info-window-content"><h2>Light Bootstrap Dashboard PRO React</h2>' +
-      "<p>A premium Admin for React-Bootstrap, Bootstrap, React, and React Hooks.</p></div>";
-
-    const infowindow = new google.maps.InfoWindow({
-      content: contentString,
-    });
-
-    google.maps.event.addListener(marker, "click", function () {
-      infowindow.open(map, marker);
-    });
-  });
-  return (
-    <>
-      <Box
-        height="600px"
-        position="relative"
-        width="100%"
-        overflow="hidden"
-        borderRadius=".375rem"
-        ref={mapRef}
-      ></Box>
-    </>
-  );
-};
-
-const Maps = () => {
+function MapWrapper() {
   const classes = useStyles();
+  const theme = useTheme();
+  const [open, setOpen] = React.useState(false);
+  const [failOpen, setFailOpen] = React.useState(false);
+  const [loading, setloading] = React.useState(false)
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setFailOpen(false)
+    setOpen(false);
+  };
+  const publicKey = localStorage.getItem("publicKey") || "";
+  const privateKey = localStorage.getItem("privateKey") || "";
+  const [balance, setbalance] = useState({})
+  useEffect(async () => {
+    const { data } = await AXIOS.post("/hashKeys", { publicKey, privateKey })
+    console.log('%c data History', 'color: blue;', data)
+    setbalance(data)
+  }, []);
+
   return (
     <>
-      <Header />
+      <UserHeader />
       {/* Page content */}
       <Container
         maxWidth={false}
@@ -124,15 +85,90 @@ const Maps = () => {
         classes={{ root: classes.containerRoot }}
       >
         <Grid container>
-          <Grid item xs={12}>
-            <Card classes={{ root: classes.cardRoot }}>
-              <MapWrapper />
+          <Grid
+            item
+            xs={12}
+            xl={12}
+            component={Box}
+            marginBottom="3rem"
+            classes={{ root: classes.gridItemRoot + " " + classes.order2 }}
+          >
+            <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+              <Alert severity="success">
+                Success!
+              </Alert>
+            </Snackbar>
+            <Snackbar open={failOpen} autoHideDuration={3000} onClose={handleClose}>
+              <Alert severity="error">
+                Fail!
+              </Alert>
+            </Snackbar>
+            <Card
+              classes={{
+                root: classes.cardRoot + " " + classes.cardRootSecondary,
+              }}
+            >
+              <CardHeader
+                subheader={
+                  <Grid
+                    container
+                    component={Box}
+                    alignItems="center"
+                    justifyContent="space-between"
+                  >
+                    <Grid item xs="auto">
+                      <Box
+                        component={Typography}
+                        variant="h3"
+                        marginBottom="0!important"
+                      >
+                        My Transactions
+                      </Box>
+                    </Grid>
+
+                  </Grid>
+                }
+                classes={{ root: classes.cardHeaderRoot }}
+              ></CardHeader>
+              <CardContent>
+                <TableContainer component={Paper}>
+                  <Table className={classes.table} aria-label="customized table">
+                    <TableHead>
+                      <TableRow>
+                        <StyledTableCell>Sender</StyledTableCell>
+                        <StyledTableCell>Receiver</StyledTableCell>
+                        <StyledTableCell align="right">Amount</StyledTableCell>
+                        <StyledTableCell align="right">Date</StyledTableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {balance?.addressTransactions?.map((row) => (
+                        <StyledTableRow key={row.transactionId}>
+                          <StyledTableCell component="th" scope="row">
+                            {row.sender}
+                          </StyledTableCell>
+                          <StyledTableCell component="th" scope="row">
+                            {row.recipient}
+                          </StyledTableCell>
+                          <StyledTableCell align="right">{row.amount}</StyledTableCell>
+                          <StyledTableCell align="right">{row.date}</StyledTableCell>
+
+                        </StyledTableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </CardContent>
             </Card>
           </Grid>
         </Grid>
+
+
+
+
       </Container>
     </>
   );
-};
+}
 
-export default Maps;
+export default MapWrapper;

@@ -17,11 +17,14 @@ import TableRow from '@material-ui/core/TableRow';
 import Typography from "@material-ui/core/Typography";
 // core components
 import UserHeader from "components/Headers/UserHeader.js";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { AXIOS } from '../../config.js';
-
-import { toast } from "react-toastify";
-
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 
 
@@ -42,16 +45,7 @@ const StyledTableRow = withStyles((theme) => ({
     },
   },
 }))(TableRow);
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
+
 
 const useStyles = makeStyles({
   table: {
@@ -62,19 +56,35 @@ const useStyles = makeStyles({
 function Profile() {
   const classes = useStyles();
   const theme = useTheme();
-
+  const publicKey = localStorage.getItem("publicKey") || "";
+  const [open, setOpen] = React.useState(false);
+  const [failOpen, setFailOpen] = React.useState(false);
+  const [loading, setloading] = React.useState(false)
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setFailOpen(false)
+    setOpen(false);
+  };
   const handleMineClick = async () => {
-    AXIOS.get("/mine").then((response) => {
+    setloading(true)
+    AXIOS.post("/mine", { recipient: publicKey }).then((response) => {
       console.log('%c response handleMineClick', 'color: blue;', response)
-      toast.success("<3 Success!");
-
+      setOpen(true)
+      setloading(false)
     }).catch((err) => {
-      toast.error("<3 Failed!", err);
-
+      setFailOpen(true)
+      setloading(false)
     })
 
   }
-
+  const [blockchain, setblockchain] = useState({})
+  useEffect(async () => {
+    const { data } = await AXIOS.get("/blockchain")
+    console.log('%c data History', 'color: blue;', data)
+    setblockchain(data)
+  }, []);
   return (
     <>
       <UserHeader />
@@ -89,11 +99,21 @@ function Profile() {
           <Grid
             item
             xs={12}
-            xl={8}
+            xl={12}
             component={Box}
             marginBottom="3rem"
             classes={{ root: classes.gridItemRoot + " " + classes.order2 }}
           >
+            <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+              <Alert severity="success">
+                Success!
+              </Alert>
+            </Snackbar>
+            <Snackbar open={failOpen} autoHideDuration={3000} onClose={handleClose}>
+              <Alert severity="error">
+                Fail!
+              </Alert>
+            </Snackbar>
             <Card
               classes={{
                 root: classes.cardRoot + " " + classes.cardRootSecondary,
@@ -113,7 +133,7 @@ function Profile() {
                         variant="h3"
                         marginBottom="0!important"
                       >
-                        My Account
+                        Current Pending Transactions
                       </Box>
                     </Grid>
                     <Grid item xs="auto">
@@ -122,7 +142,7 @@ function Profile() {
                         display="flex"
                         flexWrap="wrap"
                       >
-                        <Button
+                        {loading ? <CircularProgress color="secondary" /> : <Button
                           variant="contained"
                           color="primary"
                           size="small"
@@ -130,6 +150,8 @@ function Profile() {
                         >
                           Mine
                         </Button>
+                        }
+
                       </Box>
                     </Grid>
                   </Grid>
@@ -141,23 +163,24 @@ function Profile() {
                   <Table className={classes.table} aria-label="customized table">
                     <TableHead>
                       <TableRow>
-                        <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-                        <StyledTableCell align="right">Calories</StyledTableCell>
-                        <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
-                        <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-                        <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
+                        <StyledTableCell>Sender</StyledTableCell>
+                        <StyledTableCell>Receiver</StyledTableCell>
+                        <StyledTableCell align="right">Amount</StyledTableCell>
+                        <StyledTableCell align="right">Date</StyledTableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {rows.map((row) => (
-                        <StyledTableRow key={row.name}>
+                      {blockchain?.pendingTransactions?.map((row) => (
+                        <StyledTableRow key={row.transactionId}>
                           <StyledTableCell component="th" scope="row">
-                            {row.name}
+                            {row.sender}
                           </StyledTableCell>
-                          <StyledTableCell align="right">{row.calories}</StyledTableCell>
-                          <StyledTableCell align="right">{row.fat}</StyledTableCell>
-                          <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-                          <StyledTableCell align="right">{row.protein}</StyledTableCell>
+                          <StyledTableCell component="th" scope="row">
+                            {row.recipient}
+                          </StyledTableCell>
+                          <StyledTableCell align="right">{row.amount}</StyledTableCell>
+                          <StyledTableCell align="right">{row.date}</StyledTableCell>
+
                         </StyledTableRow>
                       ))}
                     </TableBody>

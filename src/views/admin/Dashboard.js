@@ -5,9 +5,11 @@ import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
+import Snackbar from '@material-ui/core/Snackbar';
 // @material-ui/core components
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import MuiAlert from '@material-ui/lab/Alert';
 import componentStyles from "assets/theme/views/admin/dashboard.js";
 // javascipt plugin for creating charts
 import Chart from "chart.js";
@@ -23,9 +25,9 @@ import {
 } from "variables/charts.js";
 import { AXIOS } from '../../config.js';
 import { useAuth } from '../../context/auth';
-import { ToastContainer, toast } from 'react-toastify';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
+import socket from '../../socket/index'
+
+
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -41,9 +43,12 @@ function Dashboard() {
   const { login, user } = useAuth();
   const [open, setOpen] = React.useState(false);
   const [failOpen, setFailOpen] = React.useState(false);
-
-  const handleClick = () => {
-
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setFailOpen(false)
+    setOpen(false);
   };
   if (window.Chart) {
     parseOptions(Chart, chartOptions());
@@ -74,20 +79,16 @@ function Dashboard() {
   useEffect(async () => {
     const publicKey = localStorage.getItem("publicKey") || "";
     const res = await AXIOS.get("/blockchain")
-    console.log('%c res', 'color: blue;', res.data)
     // console.log('%c state', 'color: blue;', state)
     if (!publicKey) {
       window.location.href = "/auth/login";
 
     }
+    socket.on("PT", (data) => {
+      console.log('%c data PT socket', 'color: blue;', data)
+    });
   }, []);
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setFailOpen(false)
-    setOpen(false);
-  };
+
   return (
     <>
       <Header />

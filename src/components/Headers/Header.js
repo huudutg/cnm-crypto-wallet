@@ -78,7 +78,7 @@ const Header = (props) => {
               <Grid item xl={4} lg={4} xs={12}>
                 <CardStats
                   subtitle="Balance"
-                  title={balance ? balance : 0 + " ETH"}
+                  title={balance ? balance + " ETH" : 0 + " ETH"}
                   icon={PieChart}
                   color="bgWarning"
                   sizeTitle="25px"

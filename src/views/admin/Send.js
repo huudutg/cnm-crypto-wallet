@@ -19,7 +19,11 @@ import { sign, verifySignature } from "../../crypto";
 import { publish } from "../../network";
 import { toast } from "react-toastify";
 import { AXIOS } from '../../config.js';
-
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
@@ -35,11 +39,19 @@ const Icons = () => {
 
   const classes = useStyles();
   const theme = useTheme();
-  const [copiedText, setCopiedText] = useState();
   const publicKey = localStorage.getItem("publicKey") || "";
   const privateKey = localStorage.getItem("privateKey") || "";
-  const [signature, setsignature] = useState("")
-  const [password, setpassword] = useState()
+  const [open, setOpen] = React.useState(false);
+  const [failOpen, setFailOpen] = React.useState(false);
+  const [loading, setloading] = React.useState(false)
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setFailOpen(false)
+    setOpen(false);
+  };
+
   const onFinish = async (values) => {
     console.log('Success:', values);
     const transaction = {
@@ -50,10 +62,9 @@ const Icons = () => {
     }
     AXIOS.post("/transaction/broadcast", transaction).then((response) => {
       console.log('%c response transaction/broadcast', 'color: blue;', response)
-      toast.success("<3 Success!");
-
+      setOpen(true)
     }).catch((err) => {
-      toast.error("<3 Failed!", err);
+      setFailOpen(true)
 
     })
 
@@ -83,6 +94,16 @@ const Icons = () => {
                 }}
               ></CardHeader>
               <CardContent>
+                <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+                  <Alert severity="success">
+                    Success!
+              </Alert>
+                </Snackbar>
+                <Snackbar open={failOpen} autoHideDuration={3000} onClose={handleClose}>
+                  <Alert severity="error">
+                    Fail!
+              </Alert>
+                </Snackbar>
                 <Form
                   {...layout}
                   name="basic"

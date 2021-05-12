@@ -17,6 +17,8 @@ import Button from '@material-ui/core/Button';
 import Transaction from "../../models/Transaction";
 import { sign, verifySignature } from "../../crypto";
 import { publish } from "../../network";
+import { toast } from "react-toastify";
+import { AXIOS } from '../../config.js';
 
 const layout = {
   labelCol: { span: 8 },
@@ -30,6 +32,7 @@ const tailLayout = {
 const useStyles = makeStyles(componentStyles);
 
 const Icons = () => {
+
   const classes = useStyles();
   const theme = useTheme();
   const [copiedText, setCopiedText] = useState();
@@ -37,22 +40,24 @@ const Icons = () => {
   const privateKey = localStorage.getItem("privateKey") || "";
   const [signature, setsignature] = useState("")
   const [password, setpassword] = useState()
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     console.log('Success:', values);
-    const transaction = new Transaction(
-      publicKey,
-      values.address,
-      values.amount,
-      1,
-      signature
-    );
-    transaction.signature = sign(transaction.hash, privateKey);
-    console.log('%c transaction', 'color: blue;', transaction)
-    publish("ADD_PENDING_TRANSACTION", {
-      transaction
-    });
+    const transaction = {
+      sender: publicKey,
+      recipient: values.address,
+      amount: values.amount,
+      privKey: privateKey,
+    }
+    AXIOS.post("/transaction/broadcast", transaction).then((response) => {
+      console.log('%c response transaction/broadcast', 'color: blue;', response)
+      toast.success("<3 Success!");
+
+    }).catch((err) => {
+      toast.error("<3 Failed!", err);
+
+    })
+
   };
-  uef
 
   return (
     <>

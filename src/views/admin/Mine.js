@@ -20,6 +20,7 @@ import UserHeader from "components/Headers/UserHeader.js";
 import React from "react";
 import { AXIOS } from '../../config.js';
 
+import { toast } from "react-toastify";
 
 
 
@@ -63,8 +64,14 @@ function Profile() {
   const theme = useTheme();
 
   const handleMineClick = async () => {
-    const res = await AXIOS.get("/mine")
-    console.log('%c res', 'color: blue;', res)
+    AXIOS.get("/mine").then((response) => {
+      console.log('%c response handleMineClick', 'color: blue;', response)
+      toast.success("<3 Success!");
+
+    }).catch((err) => {
+      toast.error("<3 Failed!", err);
+
+    })
 
   }
 

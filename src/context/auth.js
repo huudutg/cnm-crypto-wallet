@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import socket from "../socket/index.ts";
+import socket from "../socket/index.js";
+import { ToastContainer, toast } from 'react-toastify';
 
 const AuthContext = createContext({});
 

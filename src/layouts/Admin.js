@@ -26,7 +26,7 @@ const useStyles = makeStyles(componentStyles);
 const Admin = ({ state }) => {
   const classes = useStyles();
   const location = useLocation();
-  const publicKeTRAFFICy = localStorage.getItem("publicKey") || "";
+  const publicKey = localStorage.getItem("publicKey") || "";
 
   // const routeArr = publicKey ? routes.splice(6, 2) : routes
   React.useEffect(() => {
@@ -34,9 +34,7 @@ const Admin = ({ state }) => {
     document.scrollingElement.scrollTop = 0;
     // mainContent.current.scrollTop = 0;
   }, [location]);
-  React.useEffect(() => {
-    console.log('%c propsState', 'color: blue;', state)
-  }, []);
+
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.layout === "/admin") {

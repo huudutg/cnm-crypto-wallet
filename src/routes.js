@@ -1,9 +1,9 @@
 // core components
 import Dashboard from "views/admin/Dashboard.js";
-import Icons from "views/admin/Icons.js";
+import Icons from "views/admin/Send.js";
 import Login from "views/auth/Login.js";
-import Maps from "views/admin/Maps.js";
-import Profile from "views/admin/Profile.js";
+import Maps from "views/admin/History.js";
+import Profile from "views/admin/Mine.js";
 import Register from "views/auth/Register.js";
 import Tables from "views/admin/Tables.js";
 // @material-ui/icons components

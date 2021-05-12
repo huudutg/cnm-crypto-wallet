@@ -15,9 +15,10 @@ import boxShadows from "assets/theme/box-shadow.js";
 
 const useStyles = makeStyles(componentStyles);
 
-function CardStats({ subtitle, title, footer, icon, color }) {
+function CardStats({ subtitle, title, footer, icon, color, sizeTitle }) {
   const classes = useStyles();
   const theme = useTheme();
+  const size = sizeTitle || "15px"
   return (
     <>
       <Card classes={{ root: classes.cardRoot }} elevation={0}>
@@ -43,7 +44,7 @@ function CardStats({ subtitle, title, footer, icon, color }) {
                 marginBottom="0!important"
                 marginTop="0!important"
               >
-                <div style={{ overflow: 'hidden', wordBreak: "break-all", fontSize: "15px" }}>{title}</div>
+                <p style={{ overflow: 'hidden', wordBreak: "break-all", fontSize: size }}>{title}</p>
 
               </Box>
             </Grid>

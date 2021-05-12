@@ -11,7 +11,7 @@ import { AuthProvider } from './context/auth';
 import AdminLayout from "./layouts/Admin.js";
 import AuthLayout from "./layouts/Auth.js";
 import { action } from "./store";
-
+import { ToastContainer, toast } from 'react-toastify';
 
 class App extends Component {
   state = {
@@ -20,22 +20,25 @@ class App extends Component {
   pickBlockchain = name => {
     action({ type: "PICK_BLOCKCHAIN", name });
   };
- 
+
   render() {
     return (
-      <ThemeProvider theme={theme}>
-        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-        <CssBaseline />
-        <AuthProvider>
-          <BrowserRouter>
-            <Switch>
-              <Route path="/admin" render={(props) => <AdminLayout state={this.props.appState} {...props} />} />
-              <Route path="/auth" render={(props) => <AuthLayout state={this.props.appState} {...props} />} />
-              <Redirect from="/" to="/admin/index" />
-            </Switch>
-          </BrowserRouter>
-        </AuthProvider>
-      </ThemeProvider>
+      <>
+        <ThemeProvider theme={theme}>
+
+          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+          <CssBaseline />
+          <AuthProvider>
+            <BrowserRouter>
+              <Switch>
+                <Route path="/admin" render={(props) => <AdminLayout state={this.props.appState} {...props} />} />
+                <Route path="/auth" render={(props) => <AuthLayout state={this.props.appState} {...props} />} />
+                <Redirect from="/" to="/admin/index" />
+              </Switch>
+            </BrowserRouter>
+          </AuthProvider>
+        </ThemeProvider>
+      </>
     );
   }
 }

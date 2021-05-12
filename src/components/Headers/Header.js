@@ -17,6 +17,7 @@ import PieChart from "@material-ui/icons/PieChart";
 // core components
 import CardStats from "components/Cards/CardStats.js";
 import { AXIOS } from '../../config.js'
+import { ToastContainer, toast } from 'react-toastify';
 
 import componentStyles from "assets/theme/components/header.js";
 
@@ -31,7 +32,9 @@ const Header = (props) => {
   useEffect(async () => {
     const { data } = await AXIOS.post("/hashKeys", { publicKey, privateKey })
     console.log('%c dataHeader', 'color: blue;', data)
+    setbalance(data.addressBalance)
   }, []);
+
   return (
     <>
       <div className={classes.header}>
@@ -75,9 +78,10 @@ const Header = (props) => {
               <Grid item xl={4} lg={4} xs={12}>
                 <CardStats
                   subtitle="Balance"
-                  title="0 ETH"
+                  title={balance ? balance : 0 + " ETH"}
                   icon={PieChart}
                   color="bgWarning"
+                  sizeTitle="25px"
                   footer={
                     <>
                       <Box
@@ -92,7 +96,7 @@ const Header = (props) => {
                           width="1.5rem!important"
                           height="1.5rem!important"
                         />{" "}
-                        0 ETH
+                        {balance} ETH
                       </Box>
                       <Box component="span" whiteSpace="nowrap">
                         Since last week

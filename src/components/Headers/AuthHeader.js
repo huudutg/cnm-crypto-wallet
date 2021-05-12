@@ -16,6 +16,7 @@ const AuthHeader = () => {
   const theme = useTheme();
   return (
     <>
+      
       <Box
         className={classes.header}
         position="relative"

@@ -25,6 +25,4 @@ yarn-error.log*
 /static-storybook
 
 # packages
-package-lock.json
-./node_modules
 

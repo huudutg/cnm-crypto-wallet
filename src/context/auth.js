@@ -1,20 +1,22 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import socket from "../socket/index.ts";
 
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState({
-    name: "",
-    privateKey: "",
-    publicKey: "",
-  });
+  const [user, setUser] = useState();
   const [loading, setLoading] = useState(true);
+  let history = useHistory();
 
   useEffect(() => {
-    const id = localStorage.getItem("id") || "";
-    const avatar = localStorage.getItem("avatar") || "";
-    setUser({ id, avatar });
-    console.log("%c user.id", "color: blue;", user.id);
+    console.log('%c socket', 'color: blue;', socket)
+    // socket.open();
+    const name = localStorage.getItem("name") || "";
+    const privateKey = localStorage.getItem("privateKey") || "";
+    const publicKey = localStorage.getItem("publicKey") || "";
+    setUser({ name, privateKey, publicKey });
+
   }, []);
 
   const login = async (wallet) => {
@@ -24,6 +26,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("privateKey", wallet.privateKey);
       localStorage.setItem("publicKey", wallet.publicKey);
       setUser(wallet);
+
       return 1
     } catch (error) {
       console.log("error2221", error);
@@ -71,7 +74,9 @@ const logout = async () => {
     localStorage.removeItem("name");
     localStorage.removeItem("privateKey");
     localStorage.removeItem("publicKey");
+    return 1
   } catch (e) {
     console.log("%c e", "color: blue;", e);
+    return e
   }
 };

@@ -1,8 +1,8 @@
 import elliptic from "elliptic";
 const ec = new elliptic.ec("secp256k1");
 
-export function generatePair(name) {
-  const keypair = ec.genKeyPair({ persEnc: name });
+export function generatePair() {
+  const keypair = ec.genKeyPair();
   window.keypair = keypair;
   return {
     publicKey: keypair.getPublic("hex"),

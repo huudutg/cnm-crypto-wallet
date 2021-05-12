@@ -17,6 +17,7 @@ import Palette from "@material-ui/icons/Palette";
 import Person from "@material-ui/icons/Person";
 import Tv from "@material-ui/icons/Tv";
 import VpnKey from "@material-ui/icons/VpnKey";
+const publicKey = localStorage.getItem("publicKey") || "";
 
 var routes = [
   {
@@ -34,24 +35,24 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/icons",
-    name: "Icons",
+    path: "/send",
+    name: "Send Transaction",
     icon: Grain,
     iconColor: "Primary",
     component: Icons,
     layout: "/admin",
   },
   {
-    path: "/maps",
-    name: "Maps",
+    path: "/history",
+    name: "History",
     icon: LocationOn,
     iconColor: "Warning",
     component: Maps,
     layout: "/admin",
   },
   {
-    path: "/user-profile",
-    name: "User Profile",
+    path: "/mine",
+    name: "Mine Transaction",
     icon: Person,
     iconColor: "WarningLight",
     component: Profile,
@@ -80,30 +81,50 @@ var routes = [
     iconColor: "ErrorLight",
     component: Register,
     layout: "/auth",
-  },
-  {
-    divider: true,
-  },
-  {
-    title: "Documentation",
-  },
-  {
-    href:
-      "https://www.creative-tim.com/learning-lab/material-ui/overview/argon-dashboard?ref=admui-admin-sidebar",
-    name: "Getting started",
-    icon: FlashOn,
-  },
-  {
-    href:
-      "https://www.creative-tim.com/learning-lab/material-ui/colors/argon-dashboard?ref=admui-admin-sidebar",
-    name: "Foundation",
-    icon: Palette,
-  },
-  {
-    href:
-      "https://www.creative-tim.com/learning-lab/material-ui/alerts/argon-dashboard?ref=admui-admin-sidebar",
-    name: "Components",
-    icon: Dns,
-  },
+  }
+  // {
+  //   divider: true,
+  // },
+  // {
+  //   title: "Documentation",
+  // },
+  // {
+  //   href:
+  //     "https://www.creative-tim.com/learning-lab/material-ui/overview/argon-dashboard?ref=admui-admin-sidebar",
+  //   name: "Getting started",
+  //   icon: FlashOn,
+  // },
+  // {
+  //   href:
+  //     "https://www.creative-tim.com/learning-lab/material-ui/colors/argon-dashboard?ref=admui-admin-sidebar",
+  //   name: "Foundation",
+  //   icon: Palette,
+  // },
+  // {
+  //   href:
+  //     "https://www.creative-tim.com/learning-lab/material-ui/alerts/argon-dashboard?ref=admui-admin-sidebar",
+  //   name: "Components",
+  //   icon: Dns,
+  // },
 ];
+
+// if (!publicKey) {
+//   routes = [...routes, {
+//     path: "/login",
+//     name: "Login",
+//     icon: VpnKey,
+//     iconColor: "Info",
+//     component: Login,
+//     layout: "/auth",
+//   },
+//   {
+//     path: "/register",
+//     name: "Register",
+//     icon: AccountCircle,
+//     iconColor: "ErrorLight",
+//     component: Register,
+//     layout: "/auth",
+//   },]
+// }
+
 export default routes;

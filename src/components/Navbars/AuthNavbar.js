@@ -26,7 +26,7 @@ import componentStyles from "assets/theme/components/auth-navbar.js";
 
 const useStyles = makeStyles(componentStyles);
 
-export default function AuthNavbar() {
+export default function AuthNavbar({ state }) {
   const classes = useStyles();
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = React.useState(null);

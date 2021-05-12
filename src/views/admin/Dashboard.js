@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 // javascipt plugin for creating charts
 import Chart from "chart.js";
 // react plugin used to create charts
@@ -24,7 +24,7 @@ import Typography from "@material-ui/core/Typography";
 // @material-ui/icons components
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
-
+import { AXIOS } from '../../config.js'
 // core components
 import Header from "components/Headers/Header.js";
 
@@ -36,7 +36,8 @@ import {
 } from "variables/charts.js";
 
 import componentStyles from "assets/theme/views/admin/dashboard.js";
-
+import { useAuth } from '../../context/auth';
+// import { state } from '../../store'
 const useStyles = makeStyles(componentStyles);
 
 function Dashboard() {
@@ -44,6 +45,7 @@ function Dashboard() {
   const theme = useTheme();
   const [activeNav, setActiveNav] = React.useState(1);
   const [chartExample1Data, setChartExample1Data] = React.useState("data1");
+  const { login, user } = useAuth();
 
   if (window.Chart) {
     parseOptions(Chart, chartOptions());
@@ -53,6 +55,16 @@ function Dashboard() {
     setActiveNav(index);
     setChartExample1Data("data" + index);
   };
+  useEffect(async () => {
+    const publicKey = localStorage.getItem("publicKey") || "";
+    const res = await AXIOS.get("/blockchain")
+    console.log('%c res', 'color: blue;', res.data)
+    // console.log('%c state', 'color: blue;', state)
+    if (!publicKey) {
+      window.location.href = "/auth/login";
+
+    }
+  }, []);
   return (
     <>
       <Header />

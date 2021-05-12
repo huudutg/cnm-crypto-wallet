@@ -26,6 +26,9 @@ class Blockchain {
         this.pendingTransactions[transaction.hash] = transactionFromJSON(transaction);
       }
     });
+    subscribeTo("ADD_PENDING_TRANSACTION", ({ transaction }) => {
+      this.pendingTransactions[transaction.hash] = transaction;
+    });
 
     publish("REQUEST_BLOCKS", { blockchainName: this.name });
     subscribeTo("REQUEST_BLOCKS", ({ blockchainName }) => {

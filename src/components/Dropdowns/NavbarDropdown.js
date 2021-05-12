@@ -15,6 +15,8 @@ import EventNote from "@material-ui/icons/EventNote";
 import LiveHelp from "@material-ui/icons/LiveHelp";
 import Person from "@material-ui/icons/Person";
 import Settings from "@material-ui/icons/Settings";
+import { useAuth } from '../../context/auth';
+import { useHistory } from "react-router-dom";
 
 // core components
 import componentStyles from "assets/theme/components/navbar-dropdown.js";
@@ -24,6 +26,8 @@ const useStyles = makeStyles(componentStyles);
 export default function NavbarDropdown() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const { logout, user } = useAuth();
+  let history = useHistory();
 
   const isMenuOpen = Boolean(anchorEl);
 
@@ -34,6 +38,14 @@ export default function NavbarDropdown() {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
+  const handleLogout = () => {
+    handleMenuClose();
+    if (logout()) {
+      history.push("/auth/login");
+
+    }
+  }
+
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -114,7 +126,7 @@ export default function NavbarDropdown() {
         display="flex!important"
         alignItems="center!important"
         component={MenuItem}
-        onClick={handleMenuClose}
+        onClick={handleLogout}
       >
         <Box
           component={DirectionsRun}

@@ -14,6 +14,7 @@ import AuthFooter from "components/Footers/AuthFooter.js";
 import routes from "routes.js";
 
 import componentStyles from "assets/theme/layouts/auth.js";
+import Dashboard from "views/admin/Dashboard";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -68,6 +69,8 @@ const Auth = () => {
             <Switch>
               {getRoutes(routes)}
               <Redirect from="*" to="/auth/login" />
+              <Route path="/index" render={(props) => <Dashboard />} />
+
             </Switch>
           </Box>
         </Container>

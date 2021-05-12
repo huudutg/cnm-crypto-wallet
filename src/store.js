@@ -12,13 +12,14 @@ import { generatePair } from "./crypto";
 const defaultBlockchain = new Blockchain("Bitcoin");
 
 function createIdentity(name) {
-  const pair = generatePair(name);
+  const pair = generatePair();
 
   return {
     name: name,
     ...pair
   };
 }
+console.log('%c 121314331', 'color: blue;', 121314331)
 
 const identity = createIdentity("1");
 
@@ -67,7 +68,7 @@ const action = function (actionPayload) {
       const identity = createIdentity(actionPayload.name);
       state.identities[identity.publicKey] = identity;
       data = identity
-      console.log('%c data', 'color: blue;', data)
+      console.log('%c dataADD_IDENTITY', 'color: blue;', data)
       return data
     }
     case "CHANGE_IDENTITY_NAME": {

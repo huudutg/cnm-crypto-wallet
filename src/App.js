@@ -20,6 +20,7 @@ class App extends Component {
   pickBlockchain = name => {
     action({ type: "PICK_BLOCKCHAIN", name });
   };
+ 
   render() {
     return (
       <ThemeProvider theme={theme}>

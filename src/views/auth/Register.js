@@ -11,8 +11,8 @@ import TextField from '@material-ui/core/TextField';
 import React, { useRef, useState } from "react";
 // core components
 import componentStyles from "assets/theme/views/auth/register.js";
+import { AXIOS } from '../../config.js'
 
-import { action } from "../../store";
 
 
 const exportToJson = (objectData) => {
@@ -38,10 +38,10 @@ function Register() {
   const classes = useStyles();
   const theme = useTheme();
   const [password, setpassword] = useState()
-  const handleClick = () => {
-    const data = action({ type: 'ADD_IDENTITY', name: password })
-    console.log('%c data', 'color: blue;', data)
-    exportToJson(data)
+  const handleClick = async () => {
+    const res = await AXIOS.post("/generateKeyPair", { name: password })
+    console.log('%c res', 'color: blue;', res)
+    exportToJson(res.data)
   }
 
   return (

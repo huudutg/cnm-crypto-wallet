@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
@@ -15,14 +16,22 @@ import PieChart from "@material-ui/icons/PieChart";
 
 // core components
 import CardStats from "components/Cards/CardStats.js";
+import { AXIOS } from '../../config.js'
 
 import componentStyles from "assets/theme/components/header.js";
 
 const useStyles = makeStyles(componentStyles);
 
-const Header = () => {
+const Header = (props) => {
   const classes = useStyles();
   const theme = useTheme();
+  const publicKey = localStorage.getItem("publicKey") || "";
+  const privateKey = localStorage.getItem("privateKey") || "";
+  const [balance, setbalance] = useState(0)
+  useEffect(async () => {
+    const { data } = await AXIOS.post("/hashKeys", { publicKey, privateKey })
+    console.log('%c dataHeader', 'color: blue;', data)
+  }, []);
   return (
     <>
       <div className={classes.header}>
@@ -33,10 +42,10 @@ const Header = () => {
         >
           <div>
             <Grid container>
-              <Grid item xl={3} lg={6} xs={12}>
+              <Grid item xl={4} lg={4} xs={12}>
                 <CardStats
-                  subtitle="Traffic"
-                  title="350,897"
+                  subtitle="Address"
+                  title={publicKey}
                   icon={InsertChartOutlined}
                   color="bgError"
                   footer={
@@ -54,19 +63,19 @@ const Header = () => {
                           width="1.5rem!important"
                           height="1.5rem!important"
                         />{" "}
-                        3.48%
+                       ---
                       </Box>
                       <Box component="span" whiteSpace="nowrap">
-                        Since last month
+                        your public key
                       </Box>
                     </>
                   }
                 />
               </Grid>
-              <Grid item xl={3} lg={6} xs={12}>
+              <Grid item xl={4} lg={4} xs={12}>
                 <CardStats
-                  subtitle="New users"
-                  title="2,356"
+                  subtitle="Balance"
+                  title="0 ETH"
                   icon={PieChart}
                   color="bgWarning"
                   footer={
@@ -80,11 +89,10 @@ const Header = () => {
                         alignItems="center"
                       >
                         <Box
-                          component={ArrowDownward}
                           width="1.5rem!important"
                           height="1.5rem!important"
                         />{" "}
-                        3.48%
+                        0 ETH
                       </Box>
                       <Box component="span" whiteSpace="nowrap">
                         Since last week
@@ -93,9 +101,9 @@ const Header = () => {
                   }
                 />
               </Grid>
-              <Grid item xl={3} lg={6} xs={12}>
+              <Grid item xl={4} lg={4} xs={12}>
                 <CardStats
-                  subtitle="Sales"
+                  subtitle="Network"
                   title="924"
                   icon={GroupAdd}
                   color="bgWarningLight"
@@ -118,36 +126,6 @@ const Header = () => {
                       </Box>
                       <Box component="span" whiteSpace="nowrap">
                         Since yesterday
-                      </Box>
-                    </>
-                  }
-                />
-              </Grid>
-              <Grid item xl={3} lg={6} xs={12}>
-                <CardStats
-                  subtitle="Performance"
-                  title="49,65%"
-                  icon={EmojiEvents}
-                  color="bgInfo"
-                  footer={
-                    <>
-                      <Box
-                        component="span"
-                        fontSize=".875rem"
-                        color={theme.palette.success.main}
-                        marginRight=".5rem"
-                        display="flex"
-                        alignItems="center"
-                      >
-                        <Box
-                          component={ArrowUpward}
-                          width="1.5rem!important"
-                          height="1.5rem!important"
-                        />{" "}
-                        10%
-                      </Box>
-                      <Box component="span" whiteSpace="nowrap">
-                        Since last month
                       </Box>
                     </>
                   }

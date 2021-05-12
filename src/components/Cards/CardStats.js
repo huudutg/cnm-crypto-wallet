@@ -26,9 +26,9 @@ function CardStats({ subtitle, title, footer, icon, color }) {
             <Grid item xs="auto">
               <Box
                 component={Typography}
-                variant="h5"
                 color={theme.palette.gray[600] + "!important"}
                 marginBottom="0!important"
+                fontSize="10px"
                 marginTop="0!important"
                 className={classes.textUppercase}
               >
@@ -36,40 +36,18 @@ function CardStats({ subtitle, title, footer, icon, color }) {
               </Box>
               <Box
                 component={Typography}
+                fontSize="5x"
                 variant="h2"
+                height="75px"
                 fontWeight="600!important"
                 marginBottom="0!important"
                 marginTop="0!important"
               >
-                {title}
+                <div style={{ overflow: 'hidden', wordBreak: "break-all", fontSize: "15px" }}>{title}</div>
+
               </Box>
             </Grid>
-            <Grid item xs={"auto"}>
-              <Box
-                width="3rem"
-                height="3rem"
-                padding="12px"
-                textAlign="center"
-                display="inline-flex"
-                alignItems="center"
-                justifyContent="center"
-                borderRadius="50%"
-                boxShadow={boxShadows.boxShadow}
-                color={theme.palette.white.main}
-                className={classes[color]}
-              >
-                {icon && typeof icon === "object" ? (
-                  <Box
-                    component={icon}
-                    width="1.5rem!important"
-                    height="1.5rem!important"
-                  />
-                ) : null}
-                {icon && typeof icon === "string" ? (
-                  <Box component="i" fontSize="1.25rem" className={icon} />
-                ) : null}
-              </Box>
-            </Grid>
+
           </Grid>
           {footer ? (
             <Box

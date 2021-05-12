@@ -14,6 +14,7 @@ import componentStyles from "assets/theme/views/auth/login.js";
 import React, { useRef, useState, useContext } from "react";
 import { useAuth } from '../../context/auth';
 import { useHistory } from "react-router-dom";
+import { action, state } from "../../store";
 
 const a = {
   name: "hehe",
@@ -38,7 +39,6 @@ function Login() {
     };
   };
   const handleClick = () => {
-    console.log('%c files', 'color: blue;', files)
     if (login(files)) {
       history.push("/admin/index");
     }

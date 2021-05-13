@@ -34,7 +34,12 @@ const Header = (props) => {
     console.log('%c dataHeader', 'color: blue;', data)
     setbalance(data.addressBalance)
   }, []);
+  useEffect(() => {
+    if (props.balance) {
+      setbalance(props.balance)
 
+    }
+  }, [props.balance]);
   return (
     <>
       <div className={classes.header}>
@@ -111,6 +116,7 @@ const Header = (props) => {
                   title="924"
                   icon={GroupAdd}
                   color="bgWarningLight"
+                  sizeTitle="25px"
                   footer={
                     <>
                       <Box

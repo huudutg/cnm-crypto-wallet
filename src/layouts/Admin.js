@@ -67,7 +67,7 @@ const Admin = ({ state }) => {
           routes={routes}
           logo={{
             innerLink: "/admin/index",
-            imgSrc: require("../assets/img/brand/argon-react.png").default,
+            imgSrc: "https://s2.coinmarketcap.com/static/img/coins/200x200/9394.png",
             imgAlt: "...",
           }}
           dropdown={<NavbarDropdown />}

@@ -18,6 +18,7 @@ import Typography from "@material-ui/core/Typography";
 // core components
 import UserHeader from "components/Headers/UserHeader.js";
 import React, { useEffect, useState } from "react";
+import socket from '../../socket/index'
 import { AXIOS } from '../../config.js';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -79,11 +80,16 @@ function Profile() {
     })
 
   }
-  const [blockchain, setblockchain] = useState({})
+  const [blockchain, setblockchain] = useState([])
   useEffect(async () => {
     const { data } = await AXIOS.get("/blockchain")
     console.log('%c data History', 'color: blue;', data)
-    setblockchain(data)
+    setblockchain(data.pendingTransactions)
+
+    socket.on("blockchain", async (res) => {
+      console.log('%c databpendingTransactions', 'color: blue;', res)
+      setblockchain(res.pendingTransactions)
+    });
   }, []);
   return (
     <>
@@ -170,7 +176,7 @@ function Profile() {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {blockchain?.pendingTransactions?.map((row) => (
+                      {blockchain?.map((row) => (
                         <StyledTableRow key={row.transactionId}>
                           <StyledTableCell component="th" scope="row">
                             {row.sender}

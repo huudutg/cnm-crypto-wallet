@@ -17,7 +17,7 @@ import Typography from "@material-ui/core/Typography";
 // @material-ui/icons components
 import Clear from "@material-ui/icons/Clear";
 import MenuIcon from "@material-ui/icons/Menu";
-
+import { routes2 } from '../../routes'
 // core components
 import componentStyles from "assets/theme/components/sidebar.js";
 
@@ -41,7 +41,7 @@ export default function Sidebar({ routes, logo, dropdown, input }) {
   const menuId = "responsive-menu-id";
   // creates the links that appear in the left menu / Sidebar
   const createLinks = (routes) => {
-    return routes.map((prop, key) => {
+    return routes2.map((prop, key) => {
       if (prop.divider) {
         return <Divider key={key} classes={{ root: classes.divider }} />;
       } else if (prop.title) {
@@ -125,7 +125,10 @@ export default function Sidebar({ routes, logo, dropdown, input }) {
     });
   };
   let logoImage = (
-    <img alt={logo.imgAlt} className={classes.logoClasses} src={logo.imgSrc} />
+    <>
+      <img alt={logo.imgAlt} className="logo" src={logo.imgSrc} />
+      <div className={classes.imgTitle}>Duck Wallet</div>
+    </>
   );
   let logoObject =
     logo && logo.innerLink ? (
@@ -142,7 +145,7 @@ export default function Sidebar({ routes, logo, dropdown, input }) {
       <Hidden smDown implementation="css">
         <Drawer variant="permanent" anchor="left" open>
           <Box paddingBottom="1rem">{logoObject}</Box>
-          <List classes={{ root: classes.listRoot }}>
+          <List classes={{ root: classes.listRoot2 }}>
             {createLinks(routes)}
           </List>
         </Drawer>

@@ -133,7 +133,7 @@ export default function AuthNavbar({ state }) {
               height="30px"
               component="img"
               className={classes.headerImg}
-              src={require("assets/img/brand/argon-react-white.png").default}
+              src="https://s2.coinmarketcap.com/static/img/coins/200x200/9394.png"
             />
             <Hidden mdUp implementation="css">
               <IconButton
@@ -174,7 +174,7 @@ export default function AuthNavbar({ state }) {
                     height="36px"
                     component="img"
                     className={classes.headerImg}
-                    src={require("assets/img/brand/argon-react.png").default}
+                    src="https://s2.coinmarketcap.com/static/img/coins/200x200/9394.png"
                   />
                   <IconButton
                     edge="start"

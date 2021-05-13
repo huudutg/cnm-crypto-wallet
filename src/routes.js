@@ -128,3 +128,51 @@ var routes = [
 // }
 
 export default routes;
+
+export const routes2 = [
+  {
+    href: "#pablo",
+    name: "Upgrade to pro",
+    icon: FlashOn,
+    upgradeToPro: true,
+  },
+  {
+    path: "/index",
+    name: "Dashboard",
+    icon: Tv,
+    iconColor: "Primary",
+    component: Dashboard,
+    layout: "/admin",
+  },
+  {
+    path: "/send",
+    name: "Send Transaction",
+    icon: Grain,
+    iconColor: "Primary",
+    component: Icons,
+    layout: "/admin",
+  },
+  {
+    path: "/history",
+    name: "History",
+    icon: LocationOn,
+    iconColor: "Warning",
+    component: Maps,
+    layout: "/admin",
+  },
+  {
+    path: "/mine",
+    name: "Mine Transaction",
+    icon: Person,
+    iconColor: "WarningLight",
+    component: Profile,
+    layout: "/admin",
+  },
+  {
+    path: "/transactions",
+    name: "All Transactions History",
+    icon: FormatListBulleted,
+    iconColor: "Error",
+    component: Tables,
+    layout: "/admin",
+  }]

@@ -152,7 +152,7 @@ function Dashboard() {
                         marginBottom="0!important"
                       >
                         <Box component="span" color={theme.palette.white.main}>
-                          Sales value
+                          Account Analytics
                         </Box>
                       </Box>
                     </Grid>
@@ -175,7 +175,7 @@ function Dashboard() {
                                 : classes.buttonRootUnselected,
                           }}
                         >
-                          +12.5 ETH
+                          + Deposit
                         </Button>
                         <Button
                           variant="contained"
@@ -188,7 +188,7 @@ function Dashboard() {
                                 : classes.buttonRootUnselected,
                           }}
                         >
-                          Week
+                          - Withdraw
                         </Button>
                       </Box>
                     </Grid>
@@ -215,7 +215,7 @@ function Dashboard() {
                     Performane
                   </Box>
                 }
-                subheader="Total orders"
+                subheader="Transactions"
                 classes={{ root: classes.cardHeaderRoot }}
                 titleTypographyProps={{
                   component: Box,

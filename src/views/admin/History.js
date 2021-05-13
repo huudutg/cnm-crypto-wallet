@@ -22,6 +22,7 @@ import { AXIOS } from '../../config.js';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import socket from '../../socket/index'
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -72,6 +73,13 @@ function MapWrapper() {
     const { data } = await AXIOS.post("/hashKeys", { publicKey, privateKey })
     console.log('%c data History', 'color: blue;', data)
     setbalance(data)
+
+    socket.on("blockchain", async (res) => {
+
+      const { data } = await AXIOS.post("/hashKeys", { publicKey, privateKey })
+      setbalance(data)
+
+    });
   }, []);
 
   return (

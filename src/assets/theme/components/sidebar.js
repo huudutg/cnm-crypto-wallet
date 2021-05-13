@@ -3,6 +3,13 @@ const componentStyles = (theme) => ({
     marginTop: "2rem",
     height: "100%",
   },
+  listRoot2: {
+    height: "100%",
+  },
+  imgTitle: {
+    fontWeight: "bold",
+    color: "#CDB51C",
+  },
   listItemRoot: {
     display: "flex",
     fontSize: ".9rem",

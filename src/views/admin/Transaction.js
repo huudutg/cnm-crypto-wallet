@@ -50,16 +50,21 @@ const Tables = () => {
   const classes = useStyles();
   const theme = useTheme();
   const [blockchain, setblockchain] = useState([])
+  const [balance, setbalance] = useState()
   useEffect(() => {
     AXIOS.get("/blockchain").then((response) => {
       setblockchain(response.data.transactionsHistory)
 
     })
+    const publicKey = localStorage.getItem("publicKey") || "";
+    const privateKey = localStorage.getItem("privateKey") || "";
 
 
-    socket.on("blockchain", (data) => {
-      console.log('%c datablockchain', 'color: blue;', data)
-      setblockchain(data.transactionsHistory)
+    socket.on("blockchain", async (res) => {
+      console.log('%c datablockchain', 'color: blue;', res)
+      setblockchain(res.transactionsHistory)
+      const { data } = await AXIOS.post("/hashKeys", { publicKey, privateKey })
+      setbalance(data.addressBalance)
 
     });
   }, []);
@@ -69,7 +74,7 @@ const Tables = () => {
   }, [blockchain]);
   return (
     <>
-      <Header />
+      <Header balance={balance} />
       {/* Page content */}
       <Container
         maxWidth={false}

@@ -30,6 +30,7 @@ export default function NavbarDropdown() {
   let history = useHistory();
 
   const isMenuOpen = Boolean(anchorEl);
+  const publicKey = localStorage.getItem("publicKey") || "";
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -160,7 +161,9 @@ export default function NavbarDropdown() {
             root: classes.avatarRoot,
           }}
         />
-        <Hidden smDown>Jessica Jones</Hidden>
+        <Hidden smDown>
+          <p style={{ overflow: 'hidden', textOverflow: "ellipsis", width: "100px" }}>{publicKey}</p>
+        </Hidden>
       </Button>
       {renderMenu}
     </>
